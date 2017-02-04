@@ -114,10 +114,11 @@ cat test/lines.txt |
   -e redisPassword=$redisPassword \
   -e redisKey=$redisKey \
   -d -i evanxsummers/line-lpush
-redis-cli -a -h $redisPassword -p $encipherPort lrange $redisKey 0 5
+redis-cli -a $redisPassword -h $encipherHost -p $encipherPort lrange $redisKey 0 5
 docker rm -f test-evanx-redis test-evanx-app test-evanx-decipher test-evanx-encipher
 docker network rm test-evanx-network
 ```
+having:
 - isolated network `test-evanx-network`
 - isolated Redis instance named `test-evanx-redis`
 - two `spiped` containers to test encrypt/decrypt tunnels
