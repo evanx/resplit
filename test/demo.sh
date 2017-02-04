@@ -41,7 +41,7 @@
     -e redisPort=$encipherPort \
     -e redisPassword=$redisPassword \
     -e redisKey=$redisKey \
-    -d -i evanxsummers/line-lpush
+    -i evanxsummers/line-lpush
   redis-cli -a $redisPassword -h $encipherHost -p $encipherPort lrange $redisKey 0 5
   docker rm -f test-evanx-redis test-evanx-app test-evanx-decipher test-evanx-encipher
   docker network rm test-evanx-network
