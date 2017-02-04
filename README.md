@@ -75,6 +75,8 @@ where `redisKey` is the list to which the utility will `lpush` the lines from st
 
 ## Implementation
 
+See https://github.com/evanx/line-lpush/blob/master/lib
+
 Note `lib/index.js` uses the `redis-util-app-rpf` app archetype.
 ```
 require('./redis-util-app-rpf')(require('./spec'), require('./main'));
