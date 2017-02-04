@@ -22,16 +22,16 @@ echo 'line 3'
 ```
 where we use the utility to `lpush` lines into the Redis key `test:line-lpush`
 
-We inspect the list:
+Having run the above test, we inspect the list:
 ```
-redis-cli lrange $redisKey 0 5
-```
-```
+$ redis-cli lrange $redisKey 0 5
 1) "line 3"
 2) "line 2"
 3) "line 1"
 ```
-where the lines are in reverse order from the head.
+where we notice that the lines are in reverse order from the head. This is because the utility performs an `lpush` (left push) operation, and so the last line is at the head (left side) of the list.
+
+See https://redis.io/commands/lpush
 
 We must use `RPOP` to pop lines from the tail:
 ```
