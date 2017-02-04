@@ -35,9 +35,7 @@ where the lines are in reverse order from the head.
 
 We must use `RPOP` to pop lines from the tail:
 ```
-redis-cli rpop $redisKey
-```
-```
+$ redis-cli rpop $redisKey
 "line 1"
 ```
 
