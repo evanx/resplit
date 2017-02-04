@@ -1,16 +1,16 @@
 (
-  set -u -e -x
+  set -u -e
   mkdir -p tmp
   encipherPort=6341
   redisKey='test:line-lpush'
-  if docker network ls | grep test-evanx-network
-  then
-    docker network rm test-evanx-network
-  fi
   for name in test-evanx-redis test-evanx-app test-evanx-decipher test-evanx-encipher
   do
     docker rm -f $name || echo 'no $name'
   done
+  if docker network ls | grep test-evanx-network
+  then
+    docker network rm test-evanx-network
+  fi
   docker network create -d bridge test-evanx-network
   redisContainer=`docker run --network=test-evanx-network \
       --name test-evanx-redis -d tutum/redis`
