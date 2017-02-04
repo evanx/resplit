@@ -5,7 +5,7 @@
   redisKey='test:line-lpush'
   for name in test-evanx-redis test-evanx-app test-evanx-decipher test-evanx-encipher
   do
-    docker rm -f $name || echo 'no $name'
+    docker rm -f $name || echo "no $name"
   done
   if docker network ls | grep test-evanx-network
   then
