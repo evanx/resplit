@@ -12,29 +12,35 @@ Its use is limited to small files, i.e. much less than available memory in the h
 We want to import a text file.
 
 See `development/run.sh` https://github.com/evanx/line-lpush/blob/master/development/run.sh
+
+We will use the utility to `lpush` lines into the Redis key `test:line-lpush`
 ```
 redisKey='test:line-lpush'
+```
+Let's delete the key for starters.
+```
 redis-cli del $redisKey
+```
+Now we `npm start` our test run:
+```
 (
 echo 'line 1'
 echo 'line 2'
 echo 'line 3'
 ) | redisKey=$redisKey npm start
 ```
-where we use the utility to `lpush` lines into the Redis key `test:line-lpush`
-
-Having run the above test, we inspect the list:
+We inspect the list:
 ```
 $ redis-cli lrange $redisKey 0 5
 1) "line 3"
 2) "line 2"
 3) "line 1"
 ```
-where we notice that the lines are in reverse order from the head. This is because the utility performs an `lpush` (left push) operation, and so the last line is at the head (left side) of the list.
+where we notice that the lines are in reverse order. This is because the utility performs an `lpush` (left push) operation, and so the last line is at the head (left side) of the list.
 
 See https://redis.io/commands/lpush
 
-We must use `RPOP` to pop lines from the tail e.g. for further processing of the imported lines in order.
+Therefore for further processing of the imported lines in order, we would use `RPOP` to pop lines from right side (tail) of the list:
 ```
 $ redis-cli rpop $redisKey
 "line 1"
