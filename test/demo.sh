@@ -36,7 +36,7 @@
     docker run \
     --network=test-evanx-network \
     --name test-evanx-app \
-    -e NODE_ENV=test
+    -e NODE_ENV=test \
     -e redisHost=$encipherHost \
     -e redisPort=$encipherPort \
     -e redisPassword=$redisPassword \
