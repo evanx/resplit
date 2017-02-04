@@ -9,7 +9,35 @@ Containerizable utility to read lines of text from input and push into a Redis l
 ## Use case
 
 We want to import a text file.
+
+See `development/run.sh` See `lib/spec.js` https://github.com/evanx/line-lpush/blob/master/development/run.jss
 ```
+redisKey='test:line-lpush'
+redis-cli del $redisKey
+(
+echo 'line 1'
+echo 'line 2'
+echo 'line 3'
+) | redisKey=$redisKey npm start
+redis-cli llen $redisKey
+redis-cli lrange $redisKey 0 5
+redis-cli rpop $redisKey
+```
+where we use the utility to `lpush` lines into the Redis key `test:line-lpush`
+
+The `lrange` output:
+```
+1) "line 3"
+2) "line 2"
+3) "line 1"
+```
+
+Note the lines are in reverse order from the head, i.e. we must use `RPOP` to pop lines from the tail.
+```
+redis-cli rpop $redisKey
+```
+```
+"line 1"
 ```
 
 ## Config spec
@@ -42,6 +70,7 @@ module.exports = {
     }
 };
 ```
+where `redisKey` is the list to which the utility will `lpush` the lines from standard input.
 
 ## Implementation
 
@@ -53,7 +82,17 @@ where we extract the `config` from `process.env` according to the `spec` and inv
 
 See `lib/main.js` https://github.com/evanx/line-lpush/blob/master/lib/index.js
 ```javascript
+const getStdin = require('get-stdin');
 
+module.exports = async state => {
+    const {config, logger, client} = state;
+    logger.level = config.loggerLevel;
+    logger.debug({config});
+    const lines = await getStdin();
+    await Promise.all(lines.trim().split('\n').map(
+        line => client.lpushAsync(config.redisKey, line)
+    ));
+};
 ```
 
 ## Docker
