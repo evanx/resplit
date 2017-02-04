@@ -19,20 +19,21 @@ echo 'line 1'
 echo 'line 2'
 echo 'line 3'
 ) | redisKey=$redisKey npm start
-redis-cli llen $redisKey
-redis-cli lrange $redisKey 0 5
-redis-cli rpop $redisKey
 ```
 where we use the utility to `lpush` lines into the Redis key `test:line-lpush`
 
-The `lrange` output:
+We inspect the list:
+```
+redis-cli lrange $redisKey 0 5
+```
 ```
 1) "line 3"
 2) "line 2"
 3) "line 1"
 ```
+where the lines are in reverse order from the head.
 
-Note the lines are in reverse order from the head, i.e. we must use `RPOP` to pop lines from the tail.
+We must use `RPOP` to pop lines from the tail:
 ```
 redis-cli rpop $redisKey
 ```
