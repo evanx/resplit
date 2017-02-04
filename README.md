@@ -104,6 +104,20 @@ docker build -t line-lpush https://github.com/evanx/line-lpush.git
 from https://github.com/evanx/line-lpush/blob/master/Dockerfile
 
 See `test/demo.sh` https://github.com/evanx/line-lpush/blob/master/test/demo.sh
+```
+cat test/lines.txt |
+  docker run \
+  --network=test-evanx-network \
+  --name test-evanx-app \
+  -e redisHost=$encipherHost \
+  -e redisPort=$encipherPort \
+  -e redisPassword=$redisPassword \
+  -e redisKey=$redisKey \
+  -d -i evanxsummers/line-lpush
+redis-cli -a -h $redisPassword -p $encipherPost lrange $redisKey 0 5
+docker rm -f test-evanx-redis test-evanx-app test-evanx-decipher test-evanx-encipher
+docker network rm test-evanx-network
+```
 - isolated network `test-evanx-network`
 - isolated Redis instance named `test-evanx-redis`
 - two `spiped` containers to test encrypt/decrypt tunnels
