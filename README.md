@@ -3,7 +3,7 @@
 
 Containerizable utility to read lines of text from input and push into a Redis list.
 
-<img src="https://raw.githubusercontent.com/evanx/line-lpush/master/docs/readme/main.png"/>
+<img src="https://raw.githubusercontent.com/evanx/line-lpush/master/docs/readme/main2.png"/>
 
 
 ## Use case
