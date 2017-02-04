@@ -81,7 +81,7 @@ require('./redis-util-app-rpf')(require('./spec'), require('./main'));
 ```
 where we extract the `config` from `process.env` according to the `spec` and invoke our `main` function.
 
-See `lib/main.js` https://github.com/evanx/line-lpush/blob/master/lib/index.js
+See `lib/main.js` https://github.com/evanx/line-lpush/blob/master/lib/main.js
 ```javascript
 const getStdin = require('get-stdin');
 
@@ -102,6 +102,7 @@ You can build as follows:
 ```
 docker build -t line-lpush https://github.com/evanx/line-lpush.git
 ```
+from https://github.com/evanx/line-lpush/blob/master/Dockerfile
 
 See `test/demo.sh` https://github.com/evanx/line-lpush/blob/master/test/demo.sh
 - isolated network `test-evanx-network`
