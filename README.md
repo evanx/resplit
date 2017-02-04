@@ -5,6 +5,7 @@ Containerizable utility to read lines of text from input and push into a Redis l
 
 <img src="https://raw.githubusercontent.com/evanx/line-lpush/master/docs/readme/main2.png"/>
 
+It's use is limited to small files, i.e. much less than available memory in the host.
 
 ## Use case
 
@@ -33,7 +34,7 @@ where we notice that the lines are in reverse order from the head. This is becau
 
 See https://redis.io/commands/lpush
 
-We must use `RPOP` to pop lines from the tail e.g. for further processing of the imported lines.
+We must use `RPOP` to pop lines from the tail e.g. for further processing of the imported lines in order.
 ```
 $ redis-cli rpop $redisKey
 "line 1"
@@ -88,12 +89,17 @@ module.exports = async state => {
 };
 ```
 
-Note that `lib/index.js` uses the `redis-util-app-rpf` app archetype.
+We are not streaming the file into Redis, as the use case is limited to small files.
+
+Note that `lib/index.js` uses the `redis-util-app-rpf` application archetype.
 ```
 require('./redis-util-app-rpf')(require('./spec'), require('./main'));
 ```
 where we extract the `config` from `process.env` according to the `spec` and invoke our `main` function.
 
+That archetype is embedded in the project, as it is still evolving.
+
+You can find it at https://github.com/evanx/redis-util-app-rpf
 
 ## Docker
 
