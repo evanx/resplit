@@ -1,0 +1,40 @@
+{
+  "name": "line-lpush",
+  "version": "0.1.0",
+  "description": "Containerizable utility to read lines of text from input and push into a Redis list.",
+  "main": "src/index.js",
+  "scripts": {
+    "lint": "eslint --cache src",
+    "development": "NODE_ENV=development node --harmony lib/index.js",
+    "test": "NODE_ENV=test node --harmony lib/index.js",
+    "tmp": "NODE_ENV=development node --harmony tmp/index.js",
+    "start": "node --harmony lib/index.js",
+    "pm2start-8841": "httpPort=8841 pm2 start lib/index.js --node-args='--harmony' --name `basename $PWD`"
+  },
+  "author": "Evan Summers",
+  "license": "ISC",
+  "dependencies": {
+    "app-spec": "^0.2.0",
+    "bluebird": "^3.4.6",
+    "cli-color": "^1.1.0",
+    "fs-blob-store": "^5.2.1",
+    "koa": "^2.0.0-alpha.7",
+    "koa-router": "^7.0.1",
+    "lodash": "^4.17.4",
+    "mkdirp": "^0.5.1",
+    "multi-exec-async": "^0.2.0",
+    "redis": "^2.6.4",
+    "redis-logger-rpf": "^0.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.12.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evanx/line-lpush.git"
+  },
+  "bugs": {
+    "url": "https://github.com/evanx/line-lpush/issues"
+  },
+  "homepage": "https://github.com/evanx/line-lpush#readme"
+}
