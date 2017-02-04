@@ -5,7 +5,7 @@ Containerizable utility to read lines of text from input and push into a Redis l
 
 <img src="https://raw.githubusercontent.com/evanx/line-lpush/master/docs/readme/main2.png"/>
 
-It's use is limited to small files, i.e. much less than available memory in the host.
+Its use is limited to small files, i.e. much less than available memory in the host.
 
 ## Use case
 
