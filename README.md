@@ -10,7 +10,7 @@ Containerizable utility to read lines of text from input and push into a Redis l
 
 We want to import a text file.
 
-See `development/run.sh` https://github.com/evanx/line-lpush/blob/master/development/run.jss
+See `development/run.sh` https://github.com/evanx/line-lpush/blob/master/development/run.sh
 ```
 redisKey='test:line-lpush'
 redis-cli del $redisKey
