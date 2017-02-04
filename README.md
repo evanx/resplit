@@ -33,7 +33,7 @@ where we notice that the lines are in reverse order from the head. This is becau
 
 See https://redis.io/commands/lpush
 
-We must use `RPOP` to pop lines from the tail:
+We must use `RPOP` to pop lines from the tail e.g. for further processing of the imported lines.
 ```
 $ redis-cli rpop $redisKey
 "line 1"
