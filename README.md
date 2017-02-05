@@ -159,7 +159,7 @@ having:
 - a pair of `spiped` containers for encrypt/decrypt tunnelling
 - the prebuilt image `evanxsummers/line-lpush` used in interactive mode via `-i`
 
-<img src="https://raw.githubusercontent.com/evanx/line-lpush/master/docs/readme/demo.png"/>
+<img src="https://raw.githubusercontent.com/evanx/line-lpush/master/docs/readme/demo2.png"/>
 
 ### Redis container
 
