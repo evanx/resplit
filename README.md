@@ -172,7 +172,7 @@ See https://github.com/Tarsnap/spiped
 
 We generate a `keyfile` as follows
 ```
-  dd if=/dev/urandom bs=32 count=1 > $HOME/tmp/test-spiped-keyfile
+dd if=/dev/urandom bs=32 count=1 > $HOME/tmp/test-spiped-keyfile
 ```
 
 We then create the two ends of the tunnel using the `keyfile`:
