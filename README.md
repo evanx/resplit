@@ -103,7 +103,7 @@ module.exports = async ({config, logger, client}) => new Promise((resolve, rejec
                 this.emit('error', err);
             } else if (llen > config.highLength) {
                 const delay = Math.floor(config.delayMillis*llen/config.highLength);
-                logger.debug({llen, delay});
+                logger.warn('delay', {llen, delay});
                 setTimeout(next, delay);
             } else {
                 next();
