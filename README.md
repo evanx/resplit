@@ -120,6 +120,8 @@ const inputStreamTransform = function(buf, enc, next) {
 ```
 where we delay calling `next()` via `promiseDelay` when the length of the Redis list is somewhat high.
 
+### app archetype
+
 Incidently `lib/index.js` uses the `redis-util-app-rpf` application archetype.
 ```
 require('./redis-util-app-rpf')(require('./spec'), require('./main'));
@@ -127,7 +129,6 @@ require('./redis-util-app-rpf')(require('./spec'), require('./main'));
 where we extract the `config` from `process.env` according to the `spec` and invoke our `main` function.
 
 That archetype is embedded in the project, as it is still evolving. Also, you can find it at https://github.com/evanx/redis-util-app-rpf.
-
 
 ## Docker
 
