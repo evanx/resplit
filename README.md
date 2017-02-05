@@ -3,7 +3,7 @@
 
 Containerizable utility to read lines of text from input and push into a Redis list.
 
-<img src="https://raw.githubusercontent.com/evanx/line-lpush/master/docs/readme/main2.png"/>
+<img src="https://raw.githubusercontent.com/evanx/line-lpush/master/docs/readme/main.png"/>
 
 ## Use case
 
@@ -158,6 +158,8 @@ having:
 - isolated Redis instance named `test-evanx-redis` using image `tutum/redis`
 - a pair of `spiped` containers for encrypt/decrypt tunnelling
 - the prebuilt image `evanxsummers/line-lpush` used in interactive mode via `-i`
+
+<img src="https://raw.githubusercontent.com/evanx/line-lpush/master/docs/readme/demo.png"/>
 
 ### Redis container
 
