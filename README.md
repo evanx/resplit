@@ -104,7 +104,7 @@ See `lib/main.js` https://github.com/evanx/line-lpush/blob/master/lib/main.js
     });
 ```
 
-Incidently we delay the input stream using the length of the Redis list for such back-pressure:
+Incidently we delay the input stream using the length of the Redis list for back-pressure:
 ```javascript
 const inputStreamTransform = function(buf, enc, next) {
     this.push(buf);
