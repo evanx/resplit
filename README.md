@@ -5,8 +5,6 @@ Containerizable utility to read lines of text from input and push into a Redis l
 
 <img src="https://raw.githubusercontent.com/evanx/line-lpush/master/docs/readme/main2.png"/>
 
-Its use is limited to small files, i.e. much less than available memory in the host.
-
 ## Use case
 
 Say we need to import a text file, or lines of output from some process, for further processing.
@@ -74,9 +72,14 @@ module.exports = {
         redisKey: {
             description: 'the Redis list key'
         },
-        pauseLength: {
-
+        highLength: {
+            description: 'the length of the list for back-pressure',
+            default: 750
         },
+        delayMillis: {
+            description: 'the delay duration when back-pressure',
+            default: 2500
+        },        
         loggerLevel: {
             description: 'the logging level',
             default: 'info',
