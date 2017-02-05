@@ -1,12 +1,15 @@
 
-
 NORMAL=`echo -e '\033[0m'`
 BOLD=`echo -e '\033[1m'`
 CYAN=`echo -e '\033[96m'`
 
-  2>&1 sh -x test/demo.sh > tmp/demo.out 
+  sh -x test/demo.sh > tmp/demo.out 2>&1
 
-set -x 
+  cat tmp/demo.out
 
-  cat tmp/demo.out | sed -e "s/^\(+.*\)$/$NORMAL$CYAN$NORMAL\1/" | sed -e "s/^\(\w.*\)$/$NORMAL$BOLD\1$NORMAL/"
+  set -x 
+
+  cat tmp/demo.out | 
+    sed -e "s/^\(\+.*\)$/$NORMAL$CYAN\1$NORMAL/" |
+    sed -e "s/^\(\w.*\)$/$NORMAL$BOLD\1$NORMAL/"
 
