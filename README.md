@@ -102,7 +102,6 @@ module.exports = async ({config, logger, client}) => new Promise((resolve, rejec
             if (err) {
                 this.emit('error', err);
             } else if (llen > config.highLength) {
-                console.log('sleep', llen);
                 setTimeout(next, config.delayMillis);
             } else {
                 next();
