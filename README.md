@@ -110,16 +110,15 @@ const inputStreamTransform = function(buf, enc, next) {
         if (err) {
             this.emit('error', err);
         } else if (llen > config.highLength) {
-            const delay = Math.floor(config.delayMillis*llen/config.highLength);
-            logger.warn({llen, delay});
-            promiseDelay(delay).then(next);
+            logger.warn({llen}, config.delayMillis);
+            promiseDelay(config.delayMillis).then(next);
         } else {
             next();
         }
     })
 };
 ```
-where we delay calling `next()` via `promiseDelay` when the length of the Redis list is excessive.
+where we delay calling `next()` via `promiseDelay` when the length of the Redis list is somewhat high.
 
 Incidently `lib/index.js` uses the `redis-util-app-rpf` application archetype.
 ```
