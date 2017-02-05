@@ -15,6 +15,7 @@
   redisContainer=`docker run --network=test-evanx-network \
       --name test-evanx-redis -d tutum/redis`
   sleep 1
+  docker logs $redisContainer | grep '^\s*redis-cli -a'
   redisPassword=`docker logs $redisContainer | grep '^\s*redis-cli -a' |
       sed -e 's/^\s*redis-cli -a \(\w*\) .*$/\1/'`
   redisHost=`docker inspect $redisContainer |

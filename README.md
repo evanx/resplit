@@ -151,16 +151,46 @@ cat test/lines.txt |
   -e redisPort=$encipherPort \
   -e redisPassword=$redisPassword \
   -e redisKey=$redisKey \
-  -d -i evanxsummers/line-lpush
+  -i evanxsummers/line-lpush
 redis-cli -a $redisPassword -h $encipherHost -p $encipherPort lrange $redisKey 0 5
 docker rm -f test-evanx-redis test-evanx-app test-evanx-decipher test-evanx-encipher
 docker network rm test-evanx-network
 ```
 having:
 - isolated network `test-evanx-network`
-- isolated Redis instance named `test-evanx-redis`
-- two `spiped` containers to test encrypt/decrypt tunnels
-- the prebuilt image `evanxsummers/line-lpush`
+- isolated Redis instance named `test-evanx-redis` using image `tutum/redis`
+- a pair of `spiped` containers for encrypt/decrypt tunnelling
+- the prebuilt image `evanxsummers/line-lpush` used in interactive mode via `-i`
+
+### Redis container
+
+The demo uses `tutum/redis` where we use `docker logs` to get the password:
+```
+docker logs $redisContainer | grep '^\s*redis-cli -a'
+```
+
+### spiped
+
+See https://github.com/Tarsnap/spiped
+
+We generate a `keyfile` as follows
+```
+  dd if=/dev/urandom bs=32 count=1 > $HOME/tmp/test-spiped-keyfile
+```
+
+We then create the two ends of the tunnel using the `keyfile`:
+```
+decipherContainer=`docker run --network=test-evanx-network \
+  --name test-evanx-decipher -v $HOME/tmp/test-spiped-keyfile:/spiped/key:ro \
+  -p 6444:6444 -d spiped \
+  -d -s "[0.0.0.0]:6444" -t "[$redisHost]:6379"`
+```
+```
+encipherContainer=`docker run --network=test-evanx-network \
+  --name test-evanx-encipher -v $HOME/tmp/test-spiped-keyfile:/spiped/key:ro \
+  -p $encipherPort:$encipherPort -d spiped \
+  -e -s "[0.0.0.0]:$encipherPort" -t "[$decipherHost]:6444"`
+```
 
 ### Thanks for reading
 
