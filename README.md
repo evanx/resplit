@@ -203,4 +203,4 @@ docker network rm test-evanx-network
 ```
 
 <hr>
-By https://twitter.com/@evanxsummers
+https://twitter.com/@evanxsummers
