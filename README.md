@@ -121,6 +121,7 @@ const inputStreamTransform = function(buf, enc, next) {
     })
 };
 ```
+where `setTimeout` delays calling `next`
 
 Incidently `lib/index.js` uses the `redis-util-app-rpf` application archetype.
 ```
