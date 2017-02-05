@@ -95,13 +95,11 @@ where `redisKey` is the list to which the utility will `lpush` the lines from st
 
 See `lib/main.js` https://github.com/evanx/line-lpush/blob/master/lib/main.js
 ```javascript
-    inputStream.pipe(split()).on('data', function(line) {
-        client.lpush(config.redisKey, line, err => err? this.emit('error', err): undefined);
-    }).on('end', () => {
-        resolve();
-    }).on('error', err => {
-        reject(err);
-    });
+inputStream.pipe(split())
+.on('error', err => reject(err))
+.on('data', line => client.lpushAsync(config.redisKey, line)
+.catch(err => reject(err)))
+.on('end', () => resolve());
 ```
 
 Incidently we delay the input stream using the length of the Redis list for back-pressure:
@@ -114,14 +112,14 @@ const inputStreamTransform = function(buf, enc, next) {
         } else if (llen > config.highLength) {
             const delay = Math.floor(config.delayMillis*llen/config.highLength);
             logger.warn({llen, delay});
-            setTimeout(next, delay);
+            promiseDelay(delay).then(next);
         } else {
             next();
         }
     })
 };
 ```
-where we delay calling `next` via `setTimeout` when the length of the Redis list is excessive.
+where we delay calling `next()` via `promiseDelay` when the length of the Redis list is excessive.
 
 Incidently `lib/index.js` uses the `redis-util-app-rpf` application archetype.
 ```
