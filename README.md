@@ -121,7 +121,7 @@ const inputStreamTransform = function(buf, enc, next) {
     })
 };
 ```
-where `setTimeout` delays calling `next`
+where we delay calling `next` via `setTimeout` when the length of the Redis list is excessive.
 
 Incidently `lib/index.js` uses the `redis-util-app-rpf` application archetype.
 ```
