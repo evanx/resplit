@@ -9,7 +9,13 @@ Its use is limited to small files, i.e. much less than available memory in the h
 
 ## Use case
 
-We want to import a text file.
+Say we need to import a text file, or lines of output from some process, for further processing.
+
+If we wish to write simple Redis-driven microservices, then the first step is to stream those lines of text into Redis.
+
+This utility can perform that first step. It can be built and run as a Docker container for convenience.
+
+## Test run
 
 See `development/run.sh` https://github.com/evanx/line-lpush/blob/master/development/run.sh
 
@@ -68,6 +74,9 @@ module.exports = {
         redisKey: {
             description: 'the Redis list key'
         },
+        pauseLength: {
+
+        },
         loggerLevel: {
             description: 'the logging level',
             default: 'info',
@@ -82,30 +91,40 @@ where `redisKey` is the list to which the utility will `lpush` the lines from st
 
 See `lib/main.js` https://github.com/evanx/line-lpush/blob/master/lib/main.js
 ```javascript
-const getStdin = require('get-stdin');
-
-module.exports = async state => {
-    const {config, logger, client} = state;
-    logger.level = config.loggerLevel;
-    logger.debug({config});
-    const lines = await getStdin();
-    await Promise.all(lines.trim().split('\n').map(
-        line => client.lpushAsync(config.redisKey, line)
-    ));
-};
+module.exports = async ({config, logger, client}) => new Promise((resolve, reject) => {
+    const inputStream = (config.highLength > 0 && config.delayMillis > 0)
+    ? process.stdin.pipe(through2(function(buf, enc, next) {
+        this.push(buf);
+        client.llen(config.redisKey, (err, llen) => {
+            if (err) {
+                this.emit('error', err);
+            } else if (llen > config.highLength) {
+                console.log('sleep', llen);
+                setTimeout(next, config.delayMillis);
+            } else {
+                next();
+            }
+        })
+    }))
+    : process.stdin;
+    inputStream.pipe(split()).on('data', function(line) {
+        client.lpush(config.redisKey, line, err => err? this.emit('error', err): undefined);
+    }).on('end', () => {
+        resolve();
+    }).on('error', err => {
+        reject(err);
+    });
+});
 ```
 
-We are not streaming the file into Redis, as the use case is limited to small files.
-
-Note that `lib/index.js` uses the `redis-util-app-rpf` application archetype.
+Incidently `lib/index.js` uses the `redis-util-app-rpf` application archetype.
 ```
 require('./redis-util-app-rpf')(require('./spec'), require('./main'));
 ```
 where we extract the `config` from `process.env` according to the `spec` and invoke our `main` function.
 
-That archetype is embedded in the project, as it is still evolving.
+That archetype is embedded in the project, as it is still evolving. Also, you can find it at https://github.com/evanx/redis-util-app-rpf.
 
-You can find it at https://github.com/evanx/redis-util-app-rpf
 
 ## Docker
 
