@@ -95,23 +95,6 @@ where `redisKey` is the list to which the utility will `lpush` the lines from st
 
 See `lib/main.js` https://github.com/evanx/line-lpush/blob/master/lib/main.js
 ```javascript
-module.exports = async ({config, logger, client}) => new Promise((resolve, reject) => {
-    const inputStream = (config.highLength > 0 && config.delayMillis > 0)
-    ? process.stdin.pipe(through2(function(buf, enc, next) {
-        this.push(buf);
-        client.llen(config.redisKey, (err, llen) => {
-            if (err) {
-                this.emit('error', err);
-            } else if (llen > config.highLength) {
-                const delay = Math.floor(config.delayMillis*llen/config.highLength);
-                logger.warn('delay', {llen, delay});
-                setTimeout(next, delay);
-            } else {
-                next();
-            }
-        })
-    }))
-    : process.stdin;
     inputStream.pipe(split()).on('data', function(line) {
         client.lpush(config.redisKey, line, err => err? this.emit('error', err): undefined);
     }).on('end', () => {
@@ -119,7 +102,24 @@ module.exports = async ({config, logger, client}) => new Promise((resolve, rejec
     }).on('error', err => {
         reject(err);
     });
-});
+```
+
+Incidently we delay the input stream using the length of the Redis list for such back-pressure:
+```javascript
+const inputStreamTransform = function(buf, enc, next) {
+    this.push(buf);
+    client.llen(config.redisKey, (err, llen) => {
+        if (err) {
+            this.emit('error', err);
+        } else if (llen > config.highLength) {
+            const delay = Math.floor(config.delayMillis*llen/config.highLength);
+            logger.warn({llen, delay});
+            setTimeout(next, delay);
+        } else {
+            next();
+        }
+    })
+};
 ```
 
 Incidently `lib/index.js` uses the `redis-util-app-rpf` application archetype.
