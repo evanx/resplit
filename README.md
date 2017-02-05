@@ -152,9 +152,6 @@ cat test/lines.txt |
   -e redisPassword=$redisPassword \
   -e redisKey=$redisKey \
   -i evanxsummers/line-lpush
-redis-cli -a $redisPassword -h $encipherHost -p $encipherPort lrange $redisKey 0 5
-docker rm -f test-evanx-redis test-evanx-app test-evanx-decipher test-evanx-encipher
-docker network rm test-evanx-network
 ```
 having:
 - isolated network `test-evanx-network`
@@ -192,6 +189,16 @@ encipherContainer=`docker run --network=test-evanx-network \
   -e -s "[0.0.0.0]:$encipherPort" -t "[$decipherHost]:6444"`
 ```
 
-### Thanks for reading
+### Tear down
 
-https://twitter.com/@evanxsummers
+We remove the test images:
+```
+docker rm -f test-evanx-redis test-evanx-app test-evanx-decipher test-evanx-encipher
+```
+Finally we remove the test network:
+```
+docker network rm test-evanx-network
+```
+
+<hr>
+By https://twitter.com/@evanxsummers
