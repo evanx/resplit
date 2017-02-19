@@ -2,7 +2,7 @@
   set -u -e
   mkdir -p tmp
   encipherPort=6341
-  redisKey='test:line-lpush'
+  redisKey='test:resplit'
   for name in test-evanx-redis test-evanx-app test-evanx-decipher test-evanx-encipher
   do
     docker rm -f $name || echo "No $name but OK as just checking"
@@ -42,7 +42,7 @@
     -e redisPort=$encipherPort \
     -e redisPassword=$redisPassword \
     -e redisKey=$redisKey \
-    -i evanxsummers/line-lpush
+    -i evanxsummers/resplit
   redis-cli -a $redisPassword -h $encipherHost -p $encipherPort lrange $redisKey 0 5
   docker rm -f test-evanx-redis test-evanx-app test-evanx-decipher test-evanx-encipher
   docker network rm test-evanx-network

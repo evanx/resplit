@@ -1,5 +1,5 @@
 {
-  "name": "line-lpush",
+  "name": "resplit",
   "version": "0.1.0",
   "description": "Containerizable utility to read lines of text from input and push into a Redis list.",
   "main": "src/index.js",
@@ -14,13 +14,7 @@
   "author": "Evan Summers",
   "license": "ISC",
   "dependencies": {
-    "app-spec": "^0.2.0",
-    "bluebird": "^3.4.6",
-    "cli-color": "^1.1.0",
-    "lodash": "^4.17.4",
-    "multi-exec-async": "^0.2.0",
-    "redis": "^2.6.4",
-    "redis-logger-rpf": "^0.2.0",
+    "promise-delay-rpf": "^0.1.1",
     "split": "^1.0.0",
     "through2": "^2.0.3"
   },
@@ -29,10 +23,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/evanx/line-lpush.git"
+    "url": "git+https://github.com/evanx/resplit.git"
   },
   "bugs": {
-    "url": "https://github.com/evanx/line-lpush/issues"
+    "url": "https://github.com/evanx/resplit/issues"
   },
-  "homepage": "https://github.com/evanx/line-lpush#readme"
+  "homepage": "https://github.com/evanx/resplit#readme"
 }

@@ -1,9 +1,9 @@
 
-# line-lpush
+# resplit
 
 Containerizable utility to read lines of text from input and push into a Redis list.
 
-<img src="https://raw.githubusercontent.com/evanx/line-lpush/master/docs/readme/main.png"/>
+<img src="https://raw.githubusercontent.com/evanx/resplit/master/docs/readme/main.png"/>
 
 ## Use case
 
@@ -15,11 +15,11 @@ This utility can perform that first step. It can be built and run as a Docker co
 
 ## Test run
 
-See `development/run.sh` https://github.com/evanx/line-lpush/blob/master/development/run.sh
+See `development/run.sh` https://github.com/evanx/resplit/blob/master/development/run.sh
 
-We will use the utility to `lpush` lines into the Redis key `test:line-lpush`
+We will use the utility to `lpush` lines into the Redis key `test:resplit`
 ```
-redisKey='test:line-lpush'
+redisKey='test:resplit'
 ```
 Let's delete the key for starters.
 ```
@@ -52,7 +52,7 @@ $ redis-cli rpop $redisKey
 
 ## Config spec
 
-See `lib/spec.js` https://github.com/evanx/line-lpush/blob/master/lib/spec.js
+See `lib/spec.js` https://github.com/evanx/resplit/blob/master/lib/spec.js
 ```javascript
 module.exports = {
     description: 'Containerizable utility to read lines of text from input and push into a Redis list.',
@@ -93,7 +93,7 @@ where `redisKey` is the list to which the utility will `lpush` the lines from st
 
 ## Implementation
 
-See `lib/main.js` https://github.com/evanx/line-lpush/blob/master/lib/main.js
+See `lib/main.js` https://github.com/evanx/resplit/blob/master/lib/main.js
 ```javascript
 inputStream.pipe(split())
 .on('error', err => reject(err))
@@ -136,11 +136,11 @@ This provides lifecycle boilerplate to reuse across similar applications.
 
 You can build as follows:
 ```
-docker build -t line-lpush https://github.com/evanx/line-lpush.git
+docker build -t resplit https://github.com/evanx/resplit.git
 ```
-from https://github.com/evanx/line-lpush/blob/master/Dockerfile
+from https://github.com/evanx/resplit/blob/master/Dockerfile
 
-See `test/demo.sh` https://github.com/evanx/line-lpush/blob/master/test/demo.sh
+See `test/demo.sh` https://github.com/evanx/resplit/blob/master/test/demo.sh
 ```
 cat test/lines.txt |
   docker run \
@@ -151,15 +151,15 @@ cat test/lines.txt |
   -e redisPort=$encipherPort \
   -e redisPassword=$redisPassword \
   -e redisKey=$redisKey \
-  -i evanxsummers/line-lpush
+  -i evanxsummers/resplit
 ```
 having:
 - isolated network `test-evanx-network`
 - isolated Redis instance named `test-evanx-redis` using image `tutum/redis`
 - a pair of `spiped` containers for encrypt/decrypt tunnelling
-- the prebuilt image `evanxsummers/line-lpush` used in interactive mode via `-i`
+- the prebuilt image `evanxsummers/resplit` used in interactive mode via `-i`
 
-<img src="https://raw.githubusercontent.com/evanx/line-lpush/master/docs/readme/demo2.png"/>
+<img src="https://raw.githubusercontent.com/evanx/resplit/master/docs/readme/demo2.png"/>
 
 ### Redis container
 

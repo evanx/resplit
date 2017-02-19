@@ -1,5 +1,5 @@
 
-redisKey='test:line-lpush'
+redisKey='test:resplit'
 redis-cli del $redisKey
 (
 echo 'line 1'
