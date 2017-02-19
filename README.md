@@ -144,8 +144,8 @@ See `test/demo.sh` https://github.com/evanx/resplit/blob/master/test/demo.sh
 ```
 cat test/lines.txt |
   docker run \
-  --network=test-evanx-network \
-  --name test-evanx-app \
+  --network=resplit-network \
+  --name resplit-app \
   -e NODE_ENV=production \
   -e redisHost=$encipherHost \
   -e redisPort=$encipherPort \
@@ -154,12 +154,10 @@ cat test/lines.txt |
   -i evanxsummers/resplit
 ```
 having:
-- isolated network `test-evanx-network`
-- isolated Redis instance named `test-evanx-redis` using image `tutum/redis`
+- isolated network `resplit-network`
+- isolated Redis instance named `resplit-redis` using image `tutum/redis`
 - a pair of `spiped` containers for encrypt/decrypt tunnelling
 - the prebuilt image `evanxsummers/resplit` used in interactive mode via `-i`
-
-<img src="https://raw.githubusercontent.com/evanx/resplit/master/docs/readme/demo2.png"/>
 
 ### Redis container
 
@@ -179,14 +177,14 @@ dd if=/dev/urandom bs=32 count=1 > $HOME/tmp/test-spiped-keyfile
 
 We then create the two ends of the tunnel using the `keyfile`:
 ```
-decipherContainer=`docker run --network=test-evanx-network \
-  --name test-evanx-decipher -v $HOME/tmp/test-spiped-keyfile:/spiped/key:ro \
+decipherContainer=`docker run --network=resplit-network \
+  --name resplit-decipher -v $HOME/tmp/test-spiped-keyfile:/spiped/key:ro \
   -p 6444:6444 -d spiped \
   -d -s "[0.0.0.0]:6444" -t "[$redisHost]:6379"`
 ```
 ```
-encipherContainer=`docker run --network=test-evanx-network \
-  --name test-evanx-encipher -v $HOME/tmp/test-spiped-keyfile:/spiped/key:ro \
+encipherContainer=`docker run --network=resplit-network \
+  --name resplit-encipher -v $HOME/tmp/test-spiped-keyfile:/spiped/key:ro \
   -p $encipherPort:$encipherPort -d spiped \
   -e -s "[0.0.0.0]:$encipherPort" -t "[$decipherHost]:6444"`
 ```
@@ -195,11 +193,11 @@ encipherContainer=`docker run --network=test-evanx-network \
 
 We remove the test images:
 ```
-docker rm -f test-evanx-redis test-evanx-app test-evanx-decipher test-evanx-encipher
+docker rm -f resplit-redis resplit-app resplit-decipher resplit-encipher
 ```
 Finally we remove the test network:
 ```
-docker network rm test-evanx-network
+docker network rm resplit-network
 ```
 
 <hr>
