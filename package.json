@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "lint": "eslint --cache src",
-    "start": "node --harmony lib/index.js",
+    "start": "node --harmony lib/index.js"
   },
   "author": "Evan Summers",
   "license": "ISC",
