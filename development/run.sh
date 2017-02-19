@@ -1,5 +1,5 @@
 
-redisKey='test:resplit'
+redisKey='resplit'
 redis-cli del $redisKey
 (
 echo 'line 1'
