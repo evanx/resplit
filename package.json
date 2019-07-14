@@ -11,13 +11,14 @@
   "license": "ISC",
   "dependencies": {
     "app-spec": "^0.5.1",
+    "lodash": "^4.17.14",
     "promise-delay-rpf": "^0.1.1",
     "redis-app-rpf": "^0.5.1",
     "split": "^1.0.0",
     "through2": "^2.0.3"
   },
   "devDependencies": {
-    "eslint": "^6.0.0"
+    "eslint": "^6.0.1"
   },
   "repository": {
     "type": "git",
